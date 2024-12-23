@@ -15,8 +15,18 @@ return {
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-nvim-lua",
+      -- Add copilot dependencies
+      "zbirenbaum/copilot-cmp",
+      "zbirenbaum/copilot.lua",
     },
     config = function()
+      -- Initialize copilot-cmp
+      require('copilot').setup({
+        suggestion = { enabled = false }, -- Disable inline suggestions (handled by cmp)
+        panel = { enabled = false },      -- Disable panel
+      })
+      require("copilot_cmp").setup()
+
       local cmp = require'cmp'
       require("luasnip.loaders.from_vscode").lazy_load()
 
@@ -38,6 +48,7 @@ return {
           ['<CR>'] = cmp.mapping.confirm({ select = true }),
         }),
         sources = cmp.config.sources({
+          { name = 'copilot' },  -- Copilot suggestions
           { name = 'nvim_lsp' }, -- LSP suggestions
           { name = 'luasnip' },  -- Snippet suggestions
           { name = 'nvim_lua' }, -- Lua API completions

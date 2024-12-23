@@ -19,6 +19,7 @@ return {
 					"jdtls", -- Java
 					"jsonls", -- JSON
 					"bashls", -- Bash (useful for scripting)
+					"emmet_ls", -- Emmet for JSX/TSX
 				},
 			})
 		end,
@@ -40,7 +41,8 @@ return {
 				})
 			end
 
-      	setup_lsp("ts_ls", {
+			-- TypeScript/JavaScript LSP
+			setup_lsp("ts_ls", {
 				settings = {
 					javascript = {
 						suggest = {
@@ -55,17 +57,10 @@ return {
 				},
 			})
 
-			-- Changes: HTML LSP (No modification, just included for context)
+			-- HTML LSP
 			lspconfig.html.setup({
 				capabilities = capabilities,
 				filetypes = { "html", "ejs" }, -- Add support for EJS
-				settings = {
-					html = {
-						suggest = {
-							html5 = true, -- Enable HTML5 suggestions
-						},
-					},
-				},
 			})
 
 			-- Tailwind CSS Configuration
@@ -81,15 +76,22 @@ return {
 					"javascriptreact",
 					"typescriptreact",
 				},
-				settings = {
-					tailwindCSS = {
-						experimental = {
-							classRegex = {
-								{ "class\\s*=\\s*['\"](.*?)['\"]", 1 }, -- Match class="..."
-								{ "className\\s*=\\s*['\"](.*?)['\"]", 1 }, -- Match className="..."
-								{ "clsx\\(([^)]*)\\)", 1 }, -- Match clsx(...)
-								{ "cn\\(([^)]*)\\)", 1 }, -- Match cn(...)
-							},
+			})
+
+			-- Emmet LSP for JSX and TSX
+			lspconfig.emmet_ls.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"html",
+					"css",
+					"javascript",
+					"javascriptreact",
+					"typescriptreact",
+				},
+				init_options = {
+					html = {
+						options = {
+							["bem.enabled"] = true, -- Optional: Enable BEM support
 						},
 					},
 				},
@@ -99,7 +101,7 @@ return {
 			setup_lsp("lua_ls", {
 				Lua = {
 					diagnostics = {
-						globals = { "vim" }, -- Recognize `vim` as a global variable
+						globals = { "vim" },
 					},
 				},
 			})
